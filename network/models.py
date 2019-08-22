@@ -14,6 +14,7 @@ class Network(models.Model):
     class Meta:
         db_table = 'network'
 
+
 class Node(models.Model):
     SERVER = 'SRV'
     HOST = 'HT'
