@@ -12,6 +12,11 @@
     align-self: auto;
 
 }
+
+.nav-link{
+    border-bottom-style: hidden;
+    text-decoration-style: solid;
+}
 /* Set gray background color and 100% height */
 .sidenav {
     padding-top: 20px;

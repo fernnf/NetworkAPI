@@ -1,0 +1,18 @@
+{% load get_network %}
+{% get_network net as nets %}
+
+<div class="input-group mb-3">
+    <select class="custom-select" id="input-select-1" onchange="">
+      {% for v in nets.length %}
+        {% if v == 0 %}
+            <option value={{ v }} selected> {{ v }} </option>
+        {% else %}
+            <option value={{ v }}> {{ v }} </option>
+        {% endif %}
+
+      {% endfor %}
+    </select>
+    <div class="input-group-append">
+        <label class="input-group-text" for="input-select-1">Opções</label>
+    </div>
+</div>

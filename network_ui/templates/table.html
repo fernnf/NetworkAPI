@@ -1,0 +1,33 @@
+{% load get_network %}
+{% get_network net as nets %}
+
+<table class="table table-hover">
+    <caption class="">Networks Active</caption>
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Subnet</th>
+        <th scope="col">Gateway</th>
+        <th scope="col">Cidr</th>
+        <th scope="col">Vlan</th>
+        <th scope="col">Created</th>
+        <th scope="col">Last Modified</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for n in nets.data %}
+        <tr>
+            <th scope="row">{{ n.id }}</th>
+            <td> {{ n.name }}</td>
+            <td> {{ n.subnet }}</td>
+            <td> {{ n.gateway }}</td>
+            <td> {{ n.cidr }}</td>
+            <td> {{ n.vlan }}</td>
+            <td> {{ n.date_created }}</td>
+            <td> {{ n.date_modified }}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
