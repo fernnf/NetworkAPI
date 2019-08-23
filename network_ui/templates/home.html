@@ -1,17 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <nav class="navbar navbar-dark bg-dark">
-        <!-- Navbar content -->
-        <a class="navbar-brand" href="#">Network UI</a>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm" id="menubar">
-                One of three columns
-            </div>
-            <div class="col-sm" id="data-show">
-                One of three columns
+
+    <div class="container-fluid text-center">
+        <div class="row flex-xl-nowrap">
+            <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+                <nav id="bd-docs-nav" class="collapse bd-links">
+                    <div class="bd-toc-item active">
+                        <a class="bd-toc-link" href="#" >Network</a>
+                    </div>
+                    <div class="bd-toc-item">
+
+                    </div>
+                </nav>
             </div>
         </div>
     </div>
+
+
+
 {% endblock %}
