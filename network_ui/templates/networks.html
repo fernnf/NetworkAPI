@@ -1,6 +1,4 @@
-<p>
-<h3 class="font-weight-bold font-italic"> Networks </h3>
-</p>
+<p><h3 class="font-weight-bold font-italic"> Networks </h3>
 
 <p>
     <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-show-networks" role="button"
@@ -14,9 +12,7 @@
 
 <div class="collapse" id="collapse-show-networks">
     {% include 'option.html' with net=0 %}
-    {% include 'table.html' with net=0 %}
-
+    <div id="dynamicTable1"></div>
 </div>
-
-
-</div>
+{# {% load get_html %} #}
+{#{% get_html 1 as html %}#}
