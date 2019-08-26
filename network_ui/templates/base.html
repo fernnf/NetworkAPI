@@ -7,9 +7,6 @@
     <meta charset="UTF-8">
     <title>NetworkAPI</title>
 
-    <link href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.4.1/dist/js/tabulator.min.js"></script>
-
     <link rel="stylesheet" href={% static "css/bootstrap-grid.css" %}>
     <link rel="stylesheet" href={% static "css/bootstrap.css" %}>
     <link rel="stylesheet" href={% static "css/style.css" %}>
@@ -21,7 +18,7 @@
     <script src={% static "js/popper.min.js" %}></script>
     <script src={% static "js/bootstrap.js" %}></script>
     <script src={% static "js/bootstrap.bundle.js" %}></script>
-    <script src={% static "js/app.js" %}></script>
+
 
 </head>
 
@@ -57,16 +54,17 @@
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                              aria-orientation="vertical">
                             <a class="nav-link ">MENU</a>
-                            <a class="nav-link rounded-0  " id="v-pills-profile-tab" data-toggle="pill"
-                               href="#v-pills-profile"
-                               role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                            <a class="nav-link rounded-0  " id="v-pills-networks-tab" data-toggle="pill"
+                               href="#v-pills-networks"
+                               role="tab" aria-controls="v-pills-networks" aria-selected="false">
                                 <img src="https://img.icons8.com/dotty/30/000000/networking-manager.png" alt="">
                                 &nbsp;&nbsp;&nbsp;&nbsp;Network
 
                             </a>
-                            <a class="nav-link rounded-0 " id="v-pills-messages-tab" data-toggle="pill"
-                               href="#v-pills-messages"
-                               role="tab" aria-controls="v-pills-messages" aria-selected="false"><img src="https://img.icons8.com/cotton/24/000000/checked-laptop.png" alt="">
+                            <a class="nav-link rounded-0 " id="v-pills-nodes-tab" data-toggle="pill"
+                               href="#v-pills-nodes"
+                               role="tab" aria-controls="v-pills-nodes" aria-selected="false"><img
+                                    src="https://img.icons8.com/cotton/24/000000/checked-laptop.png" alt="">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nodes
                             </a>
                         </div>
@@ -75,11 +73,11 @@
             </div>
             <div class="col-md-10 h-100 d-flex" style="">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                         aria-labelledby="v-pills-profile-tab"> {% include 'networks.html' %}
+                    <div class="tab-pane fade" id="v-pills-networks" role="tabpanel"
+                         aria-labelledby="v-pills-profile-tab"> {% include 'networks.html' with net=0 %}
                     </div>
-                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                         aria-labelledby="v-pills-messages-tab">...
+                    <div class="tab-pane fade" id="v-pills-nodes" role="tabpanel"
+                         aria-labelledby="v-pills-messages-tab"> {% include 'nodes.html' %}
                     </div>
                     <div class="tab-pane fa fade" id="v-pills-settings" role="tabpanel"
                          aria-labelledby="v-pills-settings-tab">...
@@ -103,15 +101,15 @@
 
 <script type="text/javascript">
 
-    var table = new Tabulator('#dynamicTable1', {
+    var tablenets = new Tabulator('#dynamic-nets-table', {
         height: "311px",
         layout: "fitColumns",
         placeholder: "Choose a network",
         autoResize: true,
         resizableColumns: true,
-        dataTree:true,
-        dataTreeChildField:"nodes",
-        dataTreeElementColumn:"name",
+        dataTree: true,
+        dataTreeChildField: "nodes",
+        dataTreeElementColumn: "name",
         columns: [
             {title: "#", field: "id", sorter: "number", width: 30},
             {title: "Name", field: "name", sorter: "string", width: 180},
@@ -125,19 +123,169 @@
             {title: "Last Modified", field: "date_modified", sorter: "date", align: "center", width: 170},
         ],
     });
+
+    var tablenodes = new Tabulator('#dynamic-nodes-tables', {
+        height: "311px",
+        layout: "fitColumns",
+        placeholder: "Choose a network",
+        autoResize: true,
+        resizableColumns: true,
+        columns: [
+            {title: "#", field: "id", sorter: "number", width: 30},
+            {title: "Name", field: "name", sorter: "string", width: 180},
+            {title: "Network", field: "network", sorter: "string", width: 180},
+            {title: "Address", field: "address", sorter: "string", width: 100},
+            {title: "Type", field: "type", sorter: "string", width: 100},
+        ],
+    });
+
+
     $(document).ready(function () {
-        table.setData('api/v1/networks');
-        $('#inputSelect1').change(function () {
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                }
+            }
+        });
+
+        tablenets.setData('api/v1/networks');
+        tablenodes.setData('api/v1/nodes');
+
+        $('#input-nets-select').change(function () {
             var select = $(this).val();
+            console.log(select);
             $.ajax({
-                url: "api/v1/network/"+select,
+                url: "api/v1/network/" + select,
+                type: "GET",
                 success: function (data) {
-                    json = [data];
-                    table.cleanData;
-                    table.setData(json);
+                    var json = [data];
+                    tablenets.cleanData;
+                    tablenets.setData(json);
                 }
             });
         });
+        $('#input-nodes-select').change(function () {
+            var select = $(this).val();
+            $.ajax({
+                url: "api/v1/node/" + select,
+                type: "GET",
+                success: function (data) {
+                    var json = [data];
+                    tablenodes.cleanData;
+                    tablenodes.setData(json);
+                }
+            });
+        });
+        $('#form-add-net').on('submit', function (event) {
+
+            event.preventDefault();
+            var req = {
+                "name": $("#input-add-name").val(),
+                "nodes": [],
+                "subnet": $("#input-add-subnet").val(),
+                "gateway": $("#input-add-gateway").val(),
+                "cidr": $("#input-add-cidr").val(),
+                "vlan": $("#input-add-vlan").val()
+            };
+            console.log(req);
+
+            var url = $(this).attr("action");
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify(req),
+                processData: false,
+                success: function (response) {
+                    //console.log(responde);
+                },
+                error: function (response, status, error) {
+                    console.log(response.responseText);
+                    //console.log(status);
+                    var err = JSON.parse(response.responseText);
+                    alert("ERROR: "+ err.type);
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#form-add-node').on('submit', function (event) {
+
+            event.preventDefault();
+            var req = {
+                "name": $("#input-add-node-name").val(),
+                "address": $("#input-add-node-address").val(),
+                "type": $("#input-add-node-type").val(),
+                "network": $("#input-add-node-network").val()
+            };
+            console.log(req);
+
+            var url = $(this).attr("action");
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify(req),
+                processData: false,
+                success: function (response) {
+                    //console.log(responde);
+                },
+                error: function (response, status, error) {
+                    console.log(response.responseText);
+                    //console.log(status);
+                    var err = JSON.parse(response.responseText);
+                    alert("ERROR: "+ err.type);
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#btn-del-net').on('click', function (event) {
+            event.preventDefault();
+            var value = $("#select-net-del").val();
+            $.ajax({
+                url:"/api/v1/network/"+value,
+                type:"DELETE",
+                success: function (response) {
+                    console.log(response)
+                },
+                error: function (response, status, error) {
+                    console.log(response.responseText);
+                    var err = JSON.parse(response.responseText);
+                    alert("ERROR: "+ err.text);
+                    //console.log(status);
+                    console.log(error);
+                }
+            });
+
+        });
+        $('#btn-del-node').on('click', function (event) {
+            event.preventDefault();
+            var value = $("#select-node-del").val();
+            $.ajax({
+                url:"/api/v1/node/"+value,
+                type:"DELETE",
+                success: function (response) {
+                    console.log(response)
+                },
+                error: function (response, status, error) {
+                    console.log(response.responseText);
+                    var err = JSON.parse(response.responseText);
+                    alert("ERROR: "+ err.text);
+                    //console.log(status);
+                    console.log(error);
+                }
+            });
+
+        });
+
     });
 </script>
 </body>

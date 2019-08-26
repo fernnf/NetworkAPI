@@ -1,18 +1,89 @@
 <p><h3 class="font-weight-bold font-italic"> Networks </h3>
 
 <p>
-    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-show-networks" role="button"
+    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-show-networks"
+       role="button"
        aria-expanded="false" aria-controls="collapse-show-networks">Show</a>
-    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapseExample" role="button"
+    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-add-networks"
+       role="button"
        aria-expanded="false" aria-controls="collapseExample">Add</a>
-    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapseExample" role="button"
+    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-del-networks"
+       role="button"
        aria-expanded="false" aria-controls="collapseExample">Delete</a>
 </p>
 
-
+{% load get_network %}
+{% get_network 0 as nets %}
 <div class="collapse" id="collapse-show-networks">
-    {% include 'option.html' with net=0 %}
-    <div id="dynamicTable1"></div>
+    <div class="input-group mb-3">
+        {% csrf_token %}
+        <select class="custom-select" id="input-nets-select">
+            <option selected>Choose you network...</option>
+            {% for v in nets %}
+                {% if v.id == 0 %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% else %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <div class="input-group-append">
+            <label class="input-group-text" for="input-nets-select">Opções</label>
+        </div>
+    </div>
+    <div id="dynamic-nets-table"></div>
 </div>
-{# {% load get_html %} #}
-{#{% get_html 1 as html %}#}
+
+<div class="collapse" id="collapse-add-networks">
+    <form id="form-add-net" method="post" action="/api/v1/networks/" role="form">
+        <legend><strong>Add New Network</strong></legend>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-name"><strong>Nome</strong></label>
+            <input class="form-control" type="text" name="name" id="input-add-name" required autofocus>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-subnet"><strong>Subnet</strong></label>
+            <input class="form-control" type="text" name="subnet" placeholder="Ex: 192.168.0.0" id="input-add-subnet"
+                   required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-gateway"><strong>Gateway</strong></label>
+            <input class="form-control" type="text" name="gateway" placeholder="Ex: 192.168.0.1 or 192.168.0.254"
+                   id="input-add-gateway" required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-cidr"><strong>CIDR</strong></label>
+            <input class="form-control" type="number" name="cidr" min="8" max="32" placeholder="Ex: 8, 16, 24 or 32"
+                   id="input-add-cidr" required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-vlan"><strong>VLAN</strong></label>
+            <input class="form-control" type="number" name="vlan" min="1" max="4094" placeholder="Ex: 1 ~ 4094"
+                   id="input-add-vlan" required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <button type="submit" class="btn btn-primary mb-2" id="send-add-net" data-loading-text="Enviando...">
+                Enviar
+            </button>
+            <button type="reset" class="btn btn-primary mb-2" id="send-rst-net">Clear</button>
+        </div>
+    </form>
+</div>
+<div class="collapse" id="collapse-del-networks">
+    <div class="input-group mb-3">
+        <label class="col-md-auto" for="select-net-del">Delete Network</label>
+        <select class="custom-select" id="select-net-del">
+            <option selected>Choose you network...</option>
+            {% for v in nets %}
+                {% if v.id == 0 %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% else %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="btn-del-net">Send</button>
+        </div>
+    </div>
+</div>

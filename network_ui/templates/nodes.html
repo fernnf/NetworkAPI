@@ -1,0 +1,82 @@
+<p><h3 class="font-weight-bold font-italic"> Nodes </h3>
+
+<p>
+    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-show-nodes"
+       role="button"
+       aria-expanded="false" aria-controls="collapse-show-networks">Show</a>
+    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-add-nodes"
+       role="button"
+       aria-expanded="false" aria-controls="collapseExample">Add</a>
+    <a class="btn font-weight-bold btn-primary btn-danger" data-toggle="collapse" href="#collapse-del-nodes"
+       role="button"
+       aria-expanded="false" aria-controls="collapseExample">Delete</a>
+</p>
+
+{% load get_nodes %}
+{% get_nodes 0 as nodes %}
+<div class="collapse" id="collapse-show-nodes">
+    <div class="input-group mb-3">
+        <select class="custom-select" id="input-nodes-select">
+            <option selected>Choose your node...</option>
+            {% for v in nodes %}
+                {% if v.id == 0 %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% else %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <div class="input-group-append">
+            <label class="input-group-text" for="inputSelect1">Opções</label>
+        </div>
+    </div>
+    <div id="dynamic-nodes-tables"></div>
+</div>
+
+<div class="collapse" id="collapse-add-nodes">
+    <form id="form-add-node" method="post" action="/api/v1/nodes/" role="form">
+        <legend><strong>Add New Node</strong></legend>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-node-name"><strong>Name</strong></label>
+            <input class="form-control" type="text" name="name" id="input-add-node-name" required autofocus>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-node-address"><strong>Address</strong></label>
+            <input class="form-control" type="text" name="subnet" placeholder="Ex: 192.168.0.1"
+                   id="input-add-node-address" required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-node-type"><strong></strong>Type</label>
+            <input class="form-control" type="text" name="gateway" placeholder="Ex: Server or Host"
+                   id="input-add-node-type" required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input-add-node-network"><strong>Network</strong></label>
+            <input class="form-control" type="number" name="cidr" min="1" id="input-add-node-network" required>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <button type="submit" class="btn btn-primary mb-2" id="send-add-node-net" data-loading-text="Enviando...">
+                Enviar
+            </button>
+            <button type="reset" class="btn btn-primary mb-2" id="send-rst-node-net">Clear</button>
+        </div>
+    </form>
+</div>
+<div class="collapse" id="collapse-del-nodes">
+    <div class="input-group mb-3">
+        <label class="col-md-auto" for="select-node-del">Delete Network</label>
+        <select class="custom-select" id="select-node-del">
+            <option selected>Choose you network...</option>
+            {% for v in nodes %}
+                {% if v.id == 0 %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% else %}
+                    <option value={{ v.id }}> {{ v.name }} </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="btn-del-node">Send</button>
+        </div>
+    </div>
+</div>
