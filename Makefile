@@ -1,4 +1,4 @@
 
 build:
-	docker build -t networkapi:latest .
+	docker build --no-cache -t networkapi:latest .
  
