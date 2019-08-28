@@ -194,7 +194,6 @@
                 "cidr": $("#input-add-cidr").val(),
                 "vlan": $("#input-add-vlan").val()
             };
-            console.log(req);
 
             var url = $(this).attr("action");
             $.ajax({
@@ -204,8 +203,9 @@
                 data: JSON.stringify(req),
                 processData: false,
                 success: function (response) {
-                    console.log(responde);
+                    $('#result_action').html("<div>\"Successfully\"</div");
                     alert("Successfully");
+
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
@@ -235,8 +235,9 @@
                 data: JSON.stringify(req),
                 processData: false,
                 success: function (response) {
-                    //console.log(responde);
                     alert("Successfully");
+                    $('#result_action').html("<div>\"Successfully\"</div");
+
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
@@ -254,8 +255,8 @@
                 url:"/api/v1/network/"+value,
                 type:"DELETE",
                 success: function (response) {
-                    console.log(response);
                     alert("Successfully");
+                    $('#result_action').html("<div>\"Successfully\"</div");
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
@@ -273,8 +274,8 @@
                 url:"/api/v1/node/"+value,
                 type:"DELETE",
                 success: function (response) {
-                    console.log(response);
                     alert("Successfully");
+                    $('#result_action').html("<div>\"Successfully\"</div");
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
