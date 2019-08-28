@@ -204,14 +204,14 @@
                 data: JSON.stringify(req),
                 processData: false,
                 success: function (response) {
-                    //console.log(responde);
+                    console.log(responde);
+                    alert("Successfully");
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
                     //console.log(status);
                     var err = JSON.parse(response.responseText);
                     alert("ERROR: "+ err.type);
-                    console.log(error);
                 }
             });
         });
@@ -236,13 +236,13 @@
                 processData: false,
                 success: function (response) {
                     //console.log(responde);
+                    alert("Successfully");
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
                     //console.log(status);
                     var err = JSON.parse(response.responseText);
                     alert("ERROR: "+ err.type);
-                    console.log(error);
                 }
             });
         });
@@ -254,14 +254,14 @@
                 url:"/api/v1/network/"+value,
                 type:"DELETE",
                 success: function (response) {
-                    console.log(response)
+                    console.log(response);
+                    alert("Successfully");
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
                     var err = JSON.parse(response.responseText);
                     alert("ERROR: "+ err.text);
-                    //console.log(status);
-                    console.log(error);
+
                 }
             });
 
@@ -273,14 +273,13 @@
                 url:"/api/v1/node/"+value,
                 type:"DELETE",
                 success: function (response) {
-                    console.log(response)
+                    console.log(response);
+                    alert("Successfully");
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
                     var err = JSON.parse(response.responseText);
                     alert("ERROR: "+ err.text);
-                    //console.log(status);
-                    console.log(error);
                 }
             });
 
