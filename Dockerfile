@@ -1,21 +1,19 @@
-FROM ubuntu:latest
+FROM python:3.7.4-alpine
+ENV PYTHONUNBUFFERED 1
 
-RUN apt update
-RUN apt install -y python3 python3-pip curl git links
+RUN apk update
+RUN apk add git
 
-WORKDIR /root
-
+RUN mkdir /code
+WORKDIR /code
 RUN git clone https://github.com/fernnf/NetworkAPI.git
-
-WORKDIR /root/NetworkAPI
+WORKDIR /code/NetworkAPI
 
 RUN pip3 install --requirement requirements.txt
+RUN python3 manage.py makemigrations && python3 manage.py migrate
+RUN python3 manage.py loaddata db.json
 
-RUN ls
-
-RUN python3 manage.py migrate
-
-RUN python3 manage.py loaddata
+CMD python3 manage.py runserver 0.0.0.0:8000
 
 
 
