@@ -203,8 +203,8 @@
                 data: JSON.stringify(req),
                 processData: false,
                 success: function (response) {
-                    $('#result_action').html("<div>\"Successfully\"</div");
                     alert("Successfully");
+                    window.location.reload();
 
                 },
                 error: function (response, status, error) {
@@ -236,7 +236,7 @@
                 processData: false,
                 success: function (response) {
                     alert("Successfully");
-                    $('#result_action').html("<div>\"Successfully\"</div");
+                    window.location.reload();
 
                 },
                 error: function (response, status, error) {
@@ -256,7 +256,7 @@
                 type:"DELETE",
                 success: function (response) {
                     alert("Successfully");
-                    $('#result_action').html("<div>\"Successfully\"</div");
+                    window.location.reload();
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
@@ -275,7 +275,7 @@
                 type:"DELETE",
                 success: function (response) {
                     alert("Successfully");
-                    $('#result_action').html("<div>\"Successfully\"</div");
+                     window.location.reload();
                 },
                 error: function (response, status, error) {
                     console.log(response.responseText);
