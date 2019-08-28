@@ -211,7 +211,7 @@
                     console.log(response.responseText);
                     //console.log(status);
                     var err = JSON.parse(response.responseText);
-                    alert("ERROR: "+ err.type);
+                    alert("ERROR: "+ err);
                 }
             });
         });
@@ -243,7 +243,7 @@
                     console.log(response.responseText);
                     //console.log(status);
                     var err = JSON.parse(response.responseText);
-                    alert("ERROR: "+ err.type);
+                    alert("ERROR: "+ err);
                 }
             });
         });
@@ -261,7 +261,7 @@
                 error: function (response, status, error) {
                     console.log(response.responseText);
                     var err = JSON.parse(response.responseText);
-                    alert("ERROR: "+ err.text);
+                    alert("ERROR: "+ err);
 
                 }
             });
@@ -280,12 +280,11 @@
                 error: function (response, status, error) {
                     console.log(response.responseText);
                     var err = JSON.parse(response.responseText);
-                    alert("ERROR: "+ err.text);
+                    alert("ERROR: "+ err);
                 }
             });
 
         });
-
     });
 </script>
 </body>
