@@ -8,7 +8,7 @@ Uma simples API para o gerenciamento de rede locais e seus respectivos usuários
 * Adicionar um usuário a uma subrede;
 * Remover um usuário a uma subrede;
 
-
+Mais informações na WIKI: https://github.com/fernnf/NetworkAPI/wiki
 
 
 
